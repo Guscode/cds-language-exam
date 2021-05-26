@@ -116,7 +116,7 @@ cd assignment_5
 python3 HateClass.py
 ```
 
-For details and results see [```assignment_5/README.md```](https://github.com/Guscode/cds-language-exam/tree/main/Assignment_5)
+For details and results see [```assignment_5/README.md```](https://github.com/Guscode/cds-language-exam/tree/main/assignment_5)
 
 
 ### Assignment 6 - Game of Thrones Classification
