@@ -1,33 +1,4 @@
-<!-- PROJECT LOGO -->
-<br />
-<p align="center">
-  <a href="https://github.com/JohanHorsmans/cds-language-exam-2021">
-    <img src="../README_images/nlp2.png" alt="Logo" width="150" height="150">
-  </a>
-  
-  <h1 align="center">Cultural Data Science 2021</h1> 
-  <h3 align="center">Assignment 5</h3> 
-
-  <p align="center">
-    Johan Kresten Horsmans
-    <br />
-    <a href="https://github.com/JohanHorsmans/cds-language-exam-2021/blob/main/Language_Analytics_Exam.pdf"><strong>Link to PDF with all portfolio descriptions »</strong></a>
-    <br />
-  </p>
-</p>
-
-<!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary>Table of Contents</summary>
-  <ol>
-    <li><a href="#official-description-from-instructor">Official description from instructor</a></li>
-    <li><a href="#contribution">Contribution</a></li>
-    <li><a href="#methods">Methods</a></li>
-    <li><a href="#how-to-run">How to run</a></li>
-    <li><a href="#repository-structure-and-contents">Repository structure and contents</a></li>
-    <li><a href="#discussion-of-results">Discussion of results</a></li>
-  </ol>
-</details>
+# Assignment 5
 
 <!-- OFFICIAL DESCRIPTION FROM INSTRUCTOR -->
 ## Official description from instructor
@@ -72,7 +43,7 @@ This assignment is designed to test that you have an understanding of:
 
 <!-- CONTRIBUTION -->
 ## Contribution
-I have carried out the following assignment with [Gustav Aarup Lauridsen](https://github.com/Guscode). Gustav and I contributed equally to every stage of this project from initial conception and implementation, through the production of the final output and structuring of the repository. (50/50%)
+I have carried out the following assignment with [Johan Horsmans](https://github.com/JohanHorsmans). Johan and I contributed equally to every stage of this project from initial conception and implementation, through the production of the final output and structuring of the repository. (50/50%)
 
 <!-- METHODS -->
 ## Methods
@@ -93,7 +64,7 @@ To ensure reproducible results, we used random.seed.
 <!-- HOW TO RUN -->
 ## How to run
 
-__NOTICE:__ To run the assignment, you need to have configured and activated your virtual environment. See the main [README](https://github.com/JohanHorsmans/cds-language-exam-2021/blob/main/README.md) for a guide on how to do this.
+__NOTICE:__ To run the assignment, you need to have configured and activated your virtual environment. See the main [README](https://github.com/Guscode/cds-language-exam) for a guide on how to do this.
 
 Go through the following steps to run assignment 5:
 ```bash
@@ -121,10 +92,4 @@ Furthermore, it holds the following files:
 
 Our ensemble containing all models achieved a macro F1-score of 0.71. It is important to note that the dataset is heavily skewed towards non-offensive comments. The skewed data is also reflected in our model predictions, where the F1-score was much higher for non-offensive comments compared to offensive ones (0.95 vs. 0.46). We believe that this bias towards non-offensive comments, might very well reflect the imbalanced nature of the dataset. It defeats the purpose of a hate-speech classifier if it categorizes such a large proportion of hate as non-offensive and, as such, we argue that there is still a lot of work to be done in spite of the seemingly honorable F1-score of 0.71.
 
-Nonetheless it would have ranked as the 23rd best model (out of 38) in the OffensEval2020 competition, so we deem it to be quite successful when taking the circumstances into account. For an even better model, see our [self-assigned project](https://github.com/JohanHorsmans/cds-language-exam-2021/tree/main/self_assigned), where we achieve a macro F1-score of 0.78 on the same dataset.
-
-<br />
-<p align="center">
-  <a href="https://github.com/JohanHorsmans/cds-visual-exam-2021">
-    <img src="../README_images/logo_au.png" alt="Logo" width="300" height="102">
-  </a>
+Nonetheless it would have ranked as the 23rd best model (out of 38) in the OffensEval2020 competition, so we deem it to be quite successful when taking the circumstances into account. For an even better model, see our [self-assigned project](https://github.com/Guscode/DKbert-hatespeech-detection), where we achieve a macro F1-score of 0.78 on the same dataset.
