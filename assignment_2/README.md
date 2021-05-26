@@ -1,97 +1,50 @@
-# Assignment 3: Edge Detection
+# Assignment 2: String processing with Python
 
-The goal of the assignment is to find text and characters using edge detection. The script detect_edges.py will take either one or multiple images and input, and output contoured images as well as text files generated with tesseract. 
+Using a text corpus found on the cds-language GitHub repo or a corpus of your own found on a site such as Kaggle, write a Python script which calculates collocates for a specific keyword.
+
+The script extract_collocations.py will take a dataframe with a text column and a target word as input, and output a dataframe with collocates. In order to test the script, a dataset of wine descriptions was found on [kaggle](https://www.kaggle.com/zynicide/wine-reviews). Using the script on this data will help you to sound like a connoisseur at any wine tasting.
 
 ### How to run
 
-To run this code, please follow the guide for activating the virtual environment in [cds-visual-exam](https://github.com/Guscode/cds-visual-exam).
+To run this code, please follow the guide for activating the virtual environment in [cds-language-exam](https://github.com/Guscode/cds-language-exam).
 
 To test the script, in the virtual environment, please run:
 ```bash
-cd Assignment_3
-python detect_edges.py --image results/jefferson.jpg
+cd Assignment_2
+python extract_collocations.py --data data/10kWines.csv --column description --word fruity --window 5
 ```
-This will return a contoured version of the original image as well as a text file generated with pytesseract.
-For better results, you can include cropping coordinates to crop the image as closely to the text as possible, in order to reduce noise:
-```bash
-python detect_edges.py --image results/jefferson.jpg --crop-coordinates X750X700Y750Y1150
-```
+This will return a dataframe called all_collocations in the folder 'out'. Similarly, the script will print the ten strongest collocations based on mutual information score. The top five for target word fruity is:
 
-The results without cropping and the results with cropping:
-<a href="https://github.com/Guscode/cds-visual-exam-2021">
-    <img src="/Assignment_3/results/jeffersons.png" alt="Logo" width="1100" height="900">
-</a>
-
-The script also includes the possibility to perform edge-detection on multiple images.
-```bash
-python detect_edges.py --image-files signs
-```
-The results:
-
-<a href="https://github.com/Guscode/cds-visual-exam-2021">
-    <img src="/Assignment_3/results/city_signs.png" alt="Logo" width="900" height="900">
-</a>
-
-
+- breathtakingly
+- Salmon 
+- Done 
+- Exotically 
+- Whimsically 
 
 # User defined arguments
 
 The user defined arguments are:
 
 ```bash
---image #Path to an image
---output #Path where you want the output files
---crop-coordinates # X and Y coordinates for cropping image in X1X2Y1Y2 format.
---image-files #Path to a folder with images. script takes all files from folder with .jpg, .jpeg or .png
---psm #Specifies page segmentation method. see below for specifications.
-
+--data #Path to a dataset in .csv format
+--column #Name of column with text
+--word # Target word
+--window # amount of words before and after target word is taken as a collocate.
 ```
 
-Page segmentation modes:
+# Methods
 
-```bash
-  --psm 0    Orientation and script detection (OSD) only.
-  --psm 1    Automatic page segmentation with OSD.
-  --psm 2    Automatic page segmentation, but no OSD, or OCR.
-  --psm 3    Fully automatic page segmentation, but no OSD. (Default)
-  --psm 4    Assume a single column of text of variable sizes.
-  --psm 5    Assume a single uniform block of vertically aligned text.
-  --psm 6    Assume a single uniform block of text.
-  --psm 7    Treat the image as a single text line.
-  --psm 8    Treat the image as a single word.
-  --psm 9    Treat the image as a single word in a circle.
-  --psm 10   Treat the image as a single character.
-  --psm 11   Sparse text. Find as much text as possible in no particular order.
-  --psm 12   Sparse text with OSD.
-  --psm 13   Raw line. Treat the image as a single text line, bypassing hacks that are Tesseract-specific.
-```
+In order to solve this challenge, a script was made which takes four inputs from terminal arguments using argparse. Firstly, the user specifies the path to a data frame in .csv format, and a column argument stating which column contains the text the user wants to extract collocates from. Similarly, the script takes the target word as input from the terminal and the window size of the collocate finder. The window size determines how close words have to appear together in order to make them collocates. In order to test the tool, a dataset with wine descriptions from Kaggle.com was used. Using this dataset, the user is able to search for specific taste characteristics and extract which tastes, or notes are related to the specific characteristic. The script firstly extracts all unique words from the dataset and searches in each text by the specified window size, if the target word and another word appear together or not. Using these counts, a mutual information score is calculated for each collocate pair, which creates a sophisticated measure of co-occurrence, as it also takes non-occurrences into account. In contrast to using raw frequency of co-occurrence, the MI-score is not relying on the words being used often, rather it is a measure of how much they are used together versus separately. The script prints the ten strongest collocations and save alle collocations in a data frame in .csv format.
 
-With the cropped jefferson image, it is fair to use psm 6, as it assumes a single block of vertically aligned text.
+# Discussion
 
-```bash
-python detect_edges.py --image results/jefferson.jpg --crop-coordinates X750X700Y750Y1150 --psm 6 --output results
-```
+Running the script on the wine data with the target word “fruity” and a window size of 5, returned ten words: 
 
-With the cropped image and psm 6, the output .txt file reads:
+’breathtakingly’, ‘Salmon’, ‘Done’, ‘Exotically’, ‘Whimsically’, ‘quintas’, ‘Errazuriz’, ‘appealingly’, ‘Cognac’, ’Vacheron’.
 
-WE HOLD THESE TRUTHS TO BE SELF <br/>  
-EVIDENT: THAT ALL MEN ARE CREATED <br/>
-EQUAL, THAT. THEY ARB ENDOWED BY THEIR <br/>
-CREATOR WITH CERTAIN INALIENABLE \ <br/>
-RIGHTS, AMONG THESE ARE #IFE. LIBERTY <br/>
-AND THE PURSUIT OF HAPPINESS. THAT <br/>
-TO SECURE THESE RIGHTS _sittcabines a <br/>
-ARE INSTIFUTED AMONG MEN. WE: <br/>
-SOLEMNLY PUBLISH AND DECEARE THA] <br/>
-THESE COLONIES ARE AND OF RIGHT
+These words include great adjectives and adverbs that can be used to describe a fruity taste, as well as regions of wine production and suggestions for dishes that fit well with fruity wine. Aside from these, the collocate ‘Done’ is also included, which is not immediately related to the word fruity. Why the word ‘Done’ is included can be examined by including n-grams in the collocate search or diving deeper into the text. However, with nine out of ten words making good sense and allowing the user to sound like a wine expert, the script can be a very useful tool.
 
 
-OUGHT TO BE FREE AND INDEPEN DENT <br/>
-STATES: ‘AND FORTHE SUPPORT OF THIS <br/>
-DECLARATION, WITH A FIRM RELIANCE <br/>
-ON THE PROTECTION OF DIVINE <br/>
-PROVIDENCE, WE MUTUALLY PLEDGE <br/>
-OUR LIVES,/OUR FORTUNES-AND OUR <br/>
 
-SACRED HONOUR. <br/>
+
 
