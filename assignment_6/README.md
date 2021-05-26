@@ -1,97 +1,52 @@
-# Assignment 3: Edge Detection
+# Assignment 6: Text classification using Deep Learning
 
-The goal of the assignment is to find text and characters using edge detection. The script detect_edges.py will take either one or multiple images and input, and output contoured images as well as text files generated with tesseract. 
+The goal of the assignment is to classify which season a line from the tv show Game of Thrones belongs to. I order to to this, I employ both a multinomial logistic regression using a countvectorizer to create the model input, and a convolutional neural network using word embeddings. In order to prevent overfitting in the cnn, different regularization methods are included as command-line options. The script outputs confusion matrix heatmaps, a classification report in .csv format, and for the cnn, also a history plot.
 
 ### How to run
 
-To run this code, please follow the guide for activating the virtual environment in [cds-visual-exam](https://github.com/Guscode/cds-visual-exam).
+To run this code, please follow the guide for activating the virtual environment in [cds-language-exam](https://github.com/Guscode/cds-language-exam).
 
 To test the script, in the virtual environment, please run:
 ```bash
-cd Assignment_3
-python detect_edges.py --image results/jefferson.jpg
+cd Assignment_6
+python GOT_classification.py --input-path data/Game_of_Thrones_Script.csv --output output --epochs 10 --names include
 ```
-This will return a contoured version of the original image as well as a text file generated with pytesseract.
-For better results, you can include cropping coordinates to crop the image as closely to the text as possible, in order to reduce noise:
+This will return results from both logistic regression and cnn. In order to test the cnn with regularization, run:
+
 ```bash
-python detect_edges.py --image results/jefferson.jpg --crop-coordinates X750X700Y750Y1150
+python GOT_classification.py --input-path data/Game_of_Thrones_Script.csv --output output --epochs 10 --names include --model cnn --dropout True --regularizer 1e-7
 ```
-
-The results without cropping and the results with cropping:
-<a href="https://github.com/Guscode/cds-visual-exam-2021">
-    <img src="/Assignment_3/results/jeffersons.png" alt="Logo" width="1100" height="900">
-</a>
-
-The script also includes the possibility to perform edge-detection on multiple images.
-```bash
-python detect_edges.py --image-files signs
-```
-The results:
-
-<a href="https://github.com/Guscode/cds-visual-exam-2021">
-    <img src="/Assignment_3/results/city_signs.png" alt="Logo" width="900" height="900">
-</a>
-
-
 
 # User defined arguments
 
 The user defined arguments are:
 
 ```bash
---image #Path to an image
+--input-path #Path to GOT script
 --output #Path where you want the output files
---crop-coordinates # X and Y coordinates for cropping image in X1X2Y1Y2 format.
---image-files #Path to a folder with images. script takes all files from folder with .jpg, .jpeg or .png
---psm #Specifies page segmentation method. see below for specifications.
-
+--test_split # size of test data, default = 0.2
+--reqularizer # float indicating regularization coefficient, default = 1e-3
+--epochs #Specifies amount of epochs for the cnn
+--model # Specify which model(s) to run. default = both, options: lr, cnn
+--dropout # add dropout layer to the cnn
 ```
 
-Page segmentation modes:
+# Methods
 
-```bash
-  --psm 0    Orientation and script detection (OSD) only.
-  --psm 1    Automatic page segmentation with OSD.
-  --psm 2    Automatic page segmentation, but no OSD, or OCR.
-  --psm 3    Fully automatic page segmentation, but no OSD. (Default)
-  --psm 4    Assume a single column of text of variable sizes.
-  --psm 5    Assume a single uniform block of vertically aligned text.
-  --psm 6    Assume a single uniform block of text.
-  --psm 7    Treat the image as a single text line.
-  --psm 8    Treat the image as a single word.
-  --psm 9    Treat the image as a single word in a circle.
-  --psm 10   Treat the image as a single character.
-  --psm 11   Sparse text. Find as much text as possible in no particular order.
-  --psm 12   Sparse text with OSD.
-  --psm 13   Raw line. Treat the image as a single text line, bypassing hacks that are Tesseract-specific.
-```
+To solve this assignment, the script GOT_classification.py was made. The script takes the Game of Thrones script and performs a classification task using a multinomial logistic regression and a convolutional neural network. Before fitting the data to a multinomial logistic regression, some preprocessing has to be done. Firstly, the script defines the text and the labels. In this step, a command line argument was created that allows the user to either include or exclude the name of the speaker in the text. This was done in order to investigate the predictive value of speaker, which is hypothesized to be high, as Game of Thrones is known for killing off characters.
+The input for the multinomial logistic regression is a sparse document-term matrix which is produced using Scikit-Learn’s function CountVectorizer (Pedregosa et al., 2011), which creates a document-term matrix from the entire script. The input is then scaled, and the multinomial logistic regression is fitted to the training set. 
+For the convolutional neural network, however, labels are binarized and the texts are tokenized. Then, the texts are padded to have the same length, and represented as an embedding matrix using 50 dimensions of GloVe embeddings (Pennington et al., 2014). Thus, the first layer is an embedding layer, followed by a convolution layer. Then a max pooling layer is employed, and before the dense layers, a command line option to include a dropout layer is built into the script. Similarly, the user is also able to specify the L2 regularization. Both adding dropout layers and lowering the regularization coefficient will prevent overfitting. If no regularization was included, the model would quickly reach 100% accuracy on the training data, as there are more features than documents. Adding L2 regularization performs ridge regression, which creates a less complex model when many features are included. Similarly, adding the dropout layer randomly drops 20%, which adds effective regularization as well. After the model is compiled, it is fitted to the training data with the number of epochs specified in the command line. The model is then used to predict the test data and the results are saved.
 
-With the cropped jefferson image, it is fair to use psm 6, as it assumes a single block of vertically aligned text.
-
-```bash
-python detect_edges.py --image results/jefferson.jpg --crop-coordinates X750X700Y750Y1150 --psm 6 --output results
-```
-
-With the cropped image and psm 6, the output .txt file reads:
-
-WE HOLD THESE TRUTHS TO BE SELF <br/>  
-EVIDENT: THAT ALL MEN ARE CREATED <br/>
-EQUAL, THAT. THEY ARB ENDOWED BY THEIR <br/>
-CREATOR WITH CERTAIN INALIENABLE \ <br/>
-RIGHTS, AMONG THESE ARE #IFE. LIBERTY <br/>
-AND THE PURSUIT OF HAPPINESS. THAT <br/>
-TO SECURE THESE RIGHTS _sittcabines a <br/>
-ARE INSTIFUTED AMONG MEN. WE: <br/>
-SOLEMNLY PUBLISH AND DECEARE THA] <br/>
-THESE COLONIES ARE AND OF RIGHT
+# Discussion
+Figure 1:
+<a href="https://github.com/Guscode/cds-language-exam">
+    <img src="/assignment_6/output/cnn_heatmap.jpg" alt="Logo" width="600" height="600">
+</a>
 
 
-OUGHT TO BE FREE AND INDEPEN DENT <br/>
-STATES: ‘AND FORTHE SUPPORT OF THIS <br/>
-DECLARATION, WITH A FIRM RELIANCE <br/>
-ON THE PROTECTION OF DIVINE <br/>
-PROVIDENCE, WE MUTUALLY PLEDGE <br/>
-OUR LIVES,/OUR FORTUNES-AND OUR <br/>
+In order to evaluate the ability to predict the Game of Thrones season from a line, the model was run with the speaker excluded and included, and one with names included but with dropout layer and increased regularization. From table 1 it is clearly seen that including name of the speaker in the text clearly improves the models. Curiously, the multinomial logistic regression is the best model, which might be due to the simpler representation of texts, and especially regarding speaker names and entities in the text, which are not found in the GloVe embeddings. Figure X and X shows the loss and accuracy on training and validation through 10 epochs, clearly indicating overfitting, as the validation accuracy quickly stagnates, while the training accuracy keeps increasing. However, figure X shows a slower increase in training accuracy, indicating that the regularization is working. The fact that this does not amount to a greater validation accuracy can be caused by multiple things. Firstly, there is a chance that the model is overfitting to a signal in the training data which is not predictive of season number. Secondly, even though the data is flawless in terms of labelling, there might not be enough signal in the text to identify the seasons, deeming it an impossible task. In this specific dataset, identical lines appear in different seasons, making it impossible for the model to distinguish. A way to overcome this problem would be feature extraction or text extension. Feature extraction could be adding information about both the speaker and entities in the text. Concatenating subsequent lines would be a way of using text extension to enhance the information level in each data point, which can be beneficial despite halving the number of datapoints. Overall, the models perform much better than chance, indicating a degree of predictability, but the models do not perform well enough to be considered useful.
 
-SACRED HONOUR. <br/>
+Table 1
+![image](https://user-images.githubusercontent.com/35924673/119661524-acb23580-be30-11eb-8d2f-6570da5356db.png)
+
 
