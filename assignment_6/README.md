@@ -40,7 +40,7 @@ For the convolutional neural network, however, labels are binarized and the text
 # Discussion
 Figure 1:
 <a href="https://github.com/Guscode/cds-language-exam">
-    <img src="/assignment_6/output/cnn_heatmap.jpg" alt="Logo" width="600" height="600">
+    <img src="/assignment_6/output/history_plot_cnn.jpg" alt="Logo" width="600" height="600">
 </a>
 
 
