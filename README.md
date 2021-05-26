@@ -22,10 +22,10 @@
 <details open="open">
   <summary>Table of Contents</summary>
   <ol>
-      <li><a href="#assignment-2---Collocates">Assignment 3 - Collocates</a></li>
+      <li><a href="#assignment-2---Collocates">Assignment 2 - Collocates</a></li>
       <li><a href="#assignment-4---Networks">Assignment 4 - Networks</a></li>
       <li><a href="#assignment-5---Hatespeech">Assignment 5 - Hatespeech</a></li>
-      <li><a href="#assignment-6---Game_of_Thrones_Classification">Assignment 5 - Game of Thrones Classification</a></li>
+      <li><a href="#assignment-6---Game_of_Thrones_Classification">Assignment 6 - Game of Thrones Classification</a></li>
       <li><a href="#self-assigned-project">self-assigned project</a></li>
     </li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
@@ -66,69 +66,88 @@ Go through the following steps to run assignment 2:
 This code will extract collocates from a dataset with wine reviews.
 
 ```bash
-cd assignment_3
-python3 detect_edges.py --image jefferson.jpg --crop-coordinates X750X700Y750Y1150 --psm 5 --output output
+cd Assignment_2
+python extract_collocations.py --data data/10kWines.csv --column description --word fruity --window 5
 ```
 
-This code will perform edge detection on the images in the folder signs and save the output in /output.
-```bash
-cd assignment_3
-python3 detect_edges.py --image-files signs --output output
-```
+This will return a dataframe called all_collocations in the folder 'out'. Similarly, the script will print the ten strongest collocations based on mutual information score. The top five for target word fruity is:
 
-Type: ```python3 edge_detection.py -h``` for a detailed guide on how to specify script-parameters. 
+- breathtakingly
+- Salmon
+- Done
+- Exotically
+- Whimsically
 
 
-For details and results see [```Assignment_3/README.md```](https://github.com/Guscode/cds-visual-exam/tree/main/Assignment_3)
+For details and results see [```assignment_2/README.md```](https://github.com/Guscode/cds-language-exam/tree/main/assignment_2)
 
-### Assignment 4 - Classification Benchmarks
+### Assignment 4 - Networks
 
 Go through the following steps to run assignment 4:
 
-This code will perform classification on the mnist dataset (Lecun, 2010) using logistic regression and a neural network.
-Logistic regression:
+The goal of the assignment is to use the dataset real_and_fake_news.csv for creating a network of entities and their shared sentiment scores by sentence. create_edges.py will create edgelists and polarity scores, which can be used in networks.py to output network plots and network metrics.
+
 ```bash
-cd assignment_4
-python src/lr-mnist.py -m download -ts 0.1 -t test.png -o outputs
+cd Assignment_4
+python networks.py --path data/REAL_edges.csv --threshold 25 --metric weight
 ```
 
-Neural Network:
+Doing the same for fake news:
 ```bash
-python src/nn-mnist.py -m download -ts 0.1 -t test.png -s outputs
+cd Assignment_4
+python networks.py --path data/FAKE_edges.csv --threshold 25 --metric weight
 ```
 
-Type: ```python src/nn-mnist.py -h``` for a detailed guide on how to specify script-parameters. 
+This will return a network plot in the folder viz, and a dataframe with degree, eigenvector and betweenness scores.
 
 
-For details and results see [```Assignment_4/README.md```](https://github.com/Guscode/cds-visual-exam/tree/main/Assignment_4)
+For details and results see [```assignment_4/README.md```](https://github.com/Guscode/cds-language-exam/tree/main/assignment_4)
 
-### Assignment 5 - CNNs on cultural image data
+### Assignment 5 - Hatespeech
 
-Go through the following steps to run assignment 4:
+Made in collaboration with [Johan Horsmans](https://github.com/JohanHorsmans)
 
-This code will train a convulutional neural network on images from impressionist painters, as found [here](https://www.kaggle.com/delayedkarma/impressionist-classifier-data).
+Go through the following steps to run assignment 5:
+
+This code will train and validate a hatespeech classification model using an ensemble model
 
 ```bash
 cd assignment_5
-python cnn-artists.py -e 10 -t ../data/impressionist/training -v ../data/impressionist/validation
+python3 HateClass.py
 ```
 
-Type: ```python cnn-artists.py -h``` for a detailed guide on how to specify script-parameters. 
+For details and results see [```assignment_5/README.md```](https://github.com/Guscode/cds-language-exam/tree/main/Assignment_5)
 
 
-For details and results see [```Assignment_5/README.md```](https://github.com/Guscode/cds-visual-exam/tree/main/Assignment_5)
+### Assignment 6 - Game of Thrones Classification
 
+This code will train and validate a multinomial logistic regression and a convolutional neural network to predict which season of Game of Thrones a specific line comes from.
 
-### Self-assigned project - State of the art style-transfer for video
+```bash
+cd Assignment_6
+python GOT_classification.py --input-path data/Game_of_Thrones_Script.csv --output output --epochs 10 --names include
+```
 
-The self-assigned project is hosted in this repo [```self_assigned_project```](https://github.com/Guscode/GLStyleNet_TF2_Video)
+With extra regularization to prevent overfitting, run:
+
+```bash
+python GOT_classification.py --input-path data/Game_of_Thrones_Script.csv --output output --epochs 10 --names include --model cnn --dropout True --regularizer 1e-7
+```
+
+For details and results see [```assignment_6/README.md```](https://github.com/Guscode/cds-language-exam/tree/main/assignment_6)
+
+### self-assigned project
+
+Made in collaboration with [Johan Horsmans](https://github.com/JohanHorsmans).
+
+The self-assigned project is hosted in this repo [```self_assigned_project```](https://github.com/Guscode/DKbert-hatespeech-detection)
 
 ### Acknowledgements
 
 * [Ross Deans Kristensen-McLachlan](https://github.com/rdkm89) for teaching and invaluable coding help
 * [Frida Hæstrup](https://github.com/frillecode) for help and support and some wine 
 * [Marie Mortensen](https://github.com/marmor97) for big brain energy 
-* [Johan Horsmans](https://github.com/JohanHorsmans) for helping with readme structure and being a stand up guy
+* [Johan Horsmans](https://github.com/JohanHorsmans) for collaborating on assignment 5 and the self-assigned project, as well as helping with readme structure and being a stand up guy
 * [Emil Jessen](https://github.com/emiltj) for helping with readme structure and being a stand up guy
 
 ## Contact
