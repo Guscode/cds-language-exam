@@ -1,0 +1,10 @@
+argparse==1.1
+pandas==1.1.5
+matplotlib==3.3.4
+spacy==2.3.5
+spacy-legacy==3.0.1
+spacytextblob==0.1.7
+numpy==1.19.4
+networkx==2.5
+scikit-learn
+tensorflow
