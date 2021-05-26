@@ -32,6 +32,7 @@ def main():
     #Add terminal arguments
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", required = True, help= "Path to fake_or_real dataset")
+    ap.add_argument("--label-spec", required = True, help= "specify if data should be split by spcific label")
     ap.add_argument("--type", required = False, default = "REAL", help= "type of news, default = True, options, REAL, FAKE")
     ap.add_argument("--output", required = False, default = "..", help= "define output path")
 
@@ -41,7 +42,10 @@ def main():
     data = pd.read_csv(args["data"])
     
     #Filter article type
-    real_df = data[data["label"]==args["type"]]["text"]
+    if args["label_spec"] is not None:
+        real_df = data[data["label"]==args["type"]]["text"]
+    else:
+        real_df = data["text"]
     
     
     #Create empty lists for storing entities and polarity
