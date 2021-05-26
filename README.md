@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/Guscode/cds-visual-exam">
-    <img src="README_images/Cultural_language.jpeg" alt="Logo" width="247" height="154">
+    <img src="Cultural_language.jpeg" alt="Logo" width="247" height="154">
   </a>
   
   <h1 align="center">Cultural Data Science 2021</h1> 
