@@ -8,7 +8,7 @@ To run this code, please follow the guide for activating the virtual environment
 
 To test the script, in the virtual environment, please run:
 ```bash
-cd Assignment_6
+cd assignment_6
 python GOT_classification.py --input-path data/Game_of_Thrones_Script.csv --output output --epochs 10 --names include
 ```
 This will return results from both logistic regression and cnn. In order to test the cnn with regularization, run:
