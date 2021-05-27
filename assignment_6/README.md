@@ -25,6 +25,7 @@ The user defined arguments are:
 --input-path #Path to GOT script
 --output #Path where you want the output files
 --test_split # size of test data, default = 0.2
+--names #Specify whether speaker name should be included in the text. default=include, options: include, exclude.
 --reqularizer # float indicating regularization coefficient, default = 1e-3
 --epochs #Specifies amount of epochs for the cnn
 --model # Specify which model(s) to run. default = both, options: lr, cnn
