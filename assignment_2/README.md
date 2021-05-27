@@ -10,7 +10,7 @@ To run this code, please follow the guide for activating the virtual environment
 
 To test the script, in the virtual environment, please run:
 ```bash
-cd Assignment_2
+cd assignment_2
 python extract_collocations.py --data data/10kWines.csv --column description --word fruity --window 5
 ```
 This will return a dataframe called all_collocations in the folder 'out'. Similarly, the script will print the ten strongest collocations based on mutual information score. The top five for target word fruity is:
