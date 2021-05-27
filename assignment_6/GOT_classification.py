@@ -181,6 +181,11 @@ class got_classification:
                                    maxlen=maxlen) #Padding testing data
         embedding_dim = 50 #Define embedding size
 
+        #Download embeddings if they are not already in the folder
+        if not os.path.exists("glove.6B.zip"):
+            os.system('wget http://nlp.stanford.edu/data/glove.6B.zip')
+            os.system('unzip glove.6B.zip')
+            
         embedding_matrix = create_embedding_matrix("embeddings/glove.6B.50d.txt",
                                                    tokenizer.word_index, 
                                                    embedding_dim) #Creating embedding matrix
