@@ -1,6 +1,6 @@
 # Assignment 6: Text classification using Deep Learning
 
-The goal of the assignment is to classify which season a line from the tv show Game of Thrones belongs to. I order to to this, I employ both a multinomial logistic regression using a countvectorizer to create the model input, and a convolutional neural network using word embeddings. In order to prevent overfitting in the cnn, different regularization methods are included as command-line options. The script outputs confusion matrix heatmaps, a classification report in .csv format, and for the cnn, also a history plot.
+The goal of the assignment is to classify which season a line from the tv show Game of Thrones belongs to. I order to do this, I employ both a multinomial logistic regression using a countvectorizer to create the model input, and a convolutional neural network using word embeddings. In order to prevent overfitting in the cnn, different regularization methods are included as command-line options. The script outputs confusion matrix heatmaps, a classification report in .csv format, and for the cnn, also a history plot.
 
 ### How to run
 
