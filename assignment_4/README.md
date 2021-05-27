@@ -8,7 +8,7 @@ To run this code, please follow the guide for activating the virtual environment
 
 To test the script, in the virtual environment, please run:
 ```bash
-cd Assignment_4
+cd assignment_4
 python networks.py --path data/REAL_edges.csv --threshold 25 --metric weight
 ```
 This will return a network plot in the folder viz, and a dataframe with degree, eigenvector and betweenness scores.
@@ -21,7 +21,7 @@ Figure 1:
 Doing the same using fake news:
 
 ```bash
-cd Assignment_4
+cd assignment_4
 python networks.py --path data/FAKE_edges.csv --threshold 25 --metric weight
 ```
 
